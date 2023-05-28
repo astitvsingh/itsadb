@@ -1,5 +1,17 @@
 # Project Scope: ItsADB
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Database Functionality](#database-functionality)
+- [Scalability and Performance](#scalability-and-performance)
+- [Data Integrity and Security](#data-integrity-and-security)
+- [Developer-Friendly](#developer-friendly)
+- [Extensibility and Modularity](#extensibility-and-modularity)
+- [Platform and Environment](#platform-and-environment)
+
+## Overview
+
 ItsADB is a modern and versatile open-source database system built using Node.js. Our primary goal is to provide developers with a reliable, scalable, and easy-to-use database solution that seamlessly integrates with Node.js applications.
 
 ## Database Functionality
