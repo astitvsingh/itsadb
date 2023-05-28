@@ -53,5 +53,8 @@
   "bugs": {
     "url": "https://github.com/astitvsingh/itsadb/issues"
   },
-  "homepage": "https://github.com/astitvsingh/itsadb#readme"
+  "homepage": "https://github.com/astitvsingh/itsadb#readme",
+  "dependencies": {
+    "repl": "^0.1.3"
+  }
 }
