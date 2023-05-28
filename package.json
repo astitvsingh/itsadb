@@ -1,0 +1,57 @@
+{
+  "name": "itsadb",
+  "version": "0.0.0-alpha-1",
+  "description": "ItsADB is a modern and versatile open-source database system built using Node.js. Our primary goal is to provide developers with a reliable, scalable, and easy-to-use database solution that seamlessly integrates with Node.js applications.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/astitvsingh/itsadb.git"
+  },
+  "keywords": [
+    "ItsADB",
+    "is",
+    "a",
+    "modern",
+    "and",
+    "versatile",
+    "open-source",
+    "database",
+    "system",
+    "built",
+    "using",
+    "Node.js.",
+    "Our",
+    "primary",
+    "goal",
+    "is",
+    "to",
+    "provide",
+    "developers",
+    "with",
+    "a",
+    "reliable",
+    "scalable",
+    "and",
+    "easy-to-use",
+    "database",
+    "solution",
+    "that",
+    "seamlessly",
+    "integrates",
+    "with",
+    "Node.js",
+    "applications."
+  ],
+  "author": "Astitv Singh <https://github.com/astitvsingh>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/astitvsingh/itsadb/issues"
+  },
+  "homepage": "https://github.com/astitvsingh/itsadb#readme"
+}
