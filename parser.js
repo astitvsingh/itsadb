@@ -1,75 +1,116 @@
-const commands = [
-  {
-    name: "SELECT",
-    params: ["table"],
-    execute(params, obj) {
-      let { table } = params;
+const { commands } = require("./commandExecutor");
 
-      if (table !== undefined) {
-        return console.log(database[table].data);
+function parseStatements(str) {
+  let i = 0;
+
+  let statements = [];
+
+  let currentStatement = "";
+
+  let parsingString = false;
+
+  let objectParsingLayer = 0;
+
+  let arrayParsingLayer = 0;
+
+  while (i <= str.length) {
+    let currChar = str[i];
+
+    if (currChar === "}") {
+      currentStatement = `${currentStatement}${currChar}`;
+      objectParsingLayer--;
+      if (objectParsingLayer === 0) {
+        statements.push(JSON.parse(currentStatement));
+        currentStatement = "";
       }
 
-      console.log(database);
-    },
-  },
-  {
-    name: "INSERT",
-    params: ["table"],
-    execute(params, obj) {
-      let { table } = params;
+      i++;
+      continue;
+    }
 
-      if (database[table] === undefined) {
-        return console.error(`ERROR: Table ${table} not found`);
+    if (currChar === "{") {
+      currentStatement = `${currentStatement}${currChar}`;
+      objectParsingLayer++;
+      i++;
+      continue;
+    }
+
+    if (objectParsingLayer > 0) {
+      currentStatement = `${currentStatement}${currChar}`;
+      i++;
+      continue;
+    }
+
+    if (currChar === "]") {
+      currentStatement = `${currentStatement}${currChar}`;
+      arrayParsingLayer--;
+      if (arrayParsingLayer === 0) {
+        statements.push(JSON.parse(currentStatement));
+        currentStatement = "";
       }
 
-      let insertObj = {};
+      i++;
+      continue;
+    }
 
-      for (let i = 0; i < database[table].keys.length; i++) {
-        const key = database[table].keys[i];
+    if (currChar === "[") {
+      currentStatement = `${currentStatement}${currChar}`;
+      arrayParsingLayer++;
+      i++;
+      continue;
+    }
 
-        if (obj[i] === undefined) {
-          return console.error(`ERROR: ${key} can not be empty`);
-        }
+    if (arrayParsingLayer > 0) {
+      currentStatement = `${currentStatement}${currChar}`;
+      i++;
+      continue;
+    }
 
-        insertObj[key] = obj[i];
-      }
+    if (parsingString && currChar === `"`) {
+      parsingString = false;
+      statements.push(currentStatement);
+      currentStatement = "";
+      i++;
+      continue;
+    }
 
-      database[table].data.push(insertObj);
-    },
-  },
-  {
-    name: "CREATE",
-    params: ["table"],
-    execute(params, keys) {
-      let { table } = params;
+    if (currChar === `"` && !parsingString) {
+      parsingString = true;
+      i++;
+      continue;
+    }
 
-      if (keys === undefined || keys.length === 0) {
-        return console.error("ERROR: table columns can't be empty");
-      }
+    if (currChar === " " && !parsingString && currentStatement != "") {
+      statements.push(currentStatement);
+      currentStatement = "";
+      i++;
+      continue;
+    }
 
-      database[table] = {
-        keys: keys,
-        data: [],
-      };
-    },
-  },
-];
+    if (currChar === " " && !parsingString) {
+      i++;
+      continue;
+    }
 
-let database = {};
+    if (i === str.length && currentStatement !== "") {
+      statements.push(currentStatement);
+      currentStatement = "";
+      i++;
+      continue;
+    }
 
-function eval(cmd, context, filename, callback) {
-  cmd = cmd.replace("\n", "");
-  let eachStatement = cmd.split(" ");
-
-  for (let i = 0; i < eachStatement.length; i++) {
-    eachStatement[i] = parseCommand(eachStatement[i]);
+    currentStatement = `${currentStatement}${currChar}`;
+    i++;
   }
 
-  executeCommand(eachStatement);
-  callback(null, "Done.");
+  return statements;
 }
 
-function parseCommand(cmd) {
+function stringToCommand(cmd) {
+  if (typeof cmd === "object") {
+    return cmd;
+  }
+
   const thisCommand = commands.find(
     (cm) => cm.name.toLowerCase() === cmd.toLowerCase()
   );
@@ -81,31 +122,7 @@ function parseCommand(cmd) {
   return thisCommand;
 }
 
-function executeCommand(statements) {
-  for (let i = 0; i < statements.length; i++) {
-    const statement = statements[i];
-
-    if (statement.name !== undefined) {
-      let params = {};
-
-      for (let j = 0; j < statement.params.length; j++) {
-        i++;
-        params[statement.params[j]] = statements[i];
-      }
-
-      let obj = [];
-
-      while (i < statements.length) {
-        i++;
-
-        if (statements[i] !== undefined) {
-          obj.push(statements[i]);
-        }
-      }
-
-      statement.execute(params, obj);
-    }
-  }
-}
-
-module.exports = eval;
+module.exports = {
+  parseStatements,
+  stringToCommand,
+};

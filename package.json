@@ -7,6 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
+    "start": "node index.js",
+    "dev": "SET DEBUG=itsadb:* && nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -55,6 +57,7 @@
   },
   "homepage": "https://github.com/astitvsingh/itsadb#readme",
   "dependencies": {
+    "fs": "^0.0.1-security",
     "repl": "^0.1.3"
   }
 }
